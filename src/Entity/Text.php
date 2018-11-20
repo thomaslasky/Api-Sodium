@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Text
 {
+/*managing the texts in the website*/
+
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
