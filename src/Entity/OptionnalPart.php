@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass="App\Repository\OptionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OptionnalPartRepository")
  */
-class Option
+class OptionnalPart
 {
     /**
      * @ORM\Id()
@@ -39,8 +39,8 @@ class Option
     private $image;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\CustomizablePart", inversedBy="options")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\CustomizablePart", inversedBy="optionnalParts")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $customizable_part;
 

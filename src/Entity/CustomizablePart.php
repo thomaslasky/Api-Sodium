@@ -36,18 +36,18 @@ class CustomizablePart
     private $name_es;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Option", mappedBy="customizable_part", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\OptionnalPart", mappedBy="customizable_part", orphanRemoval=true)
      */
-    private $options;
+    private $optionnalParts;
 
     public function __construct()
     {
-        $this->options = new ArrayCollection();
+        $this->optionnalParts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,7 +96,7 @@ class CustomizablePart
         return $this->image;
     }
 
-    public function setImage(?string $image): self
+    public function setImage(string $image): self
     {
         $this->image = $image;
 
@@ -104,30 +104,30 @@ class CustomizablePart
     }
 
     /**
-     * @return Collection|Option[]
+     * @return Collection|OptionnalPart[]
      */
-    public function getOptions(): Collection
+    public function getOptionnalParts(): Collection
     {
-        return $this->options;
+        return $this->optionnalParts;
     }
 
-    public function addOption(Option $option): self
+    public function addOptionnalPart(OptionnalPart $optionnalPart): self
     {
-        if (!$this->options->contains($option)) {
-            $this->options[] = $option;
-            $option->setCustomizablePart($this);
+        if (!$this->optionnalParts->contains($optionnalPart)) {
+            $this->optionnalParts[] = $optionnalPart;
+            $optionnalPart->setCustomizablePart($this);
         }
 
         return $this;
     }
 
-    public function removeOption(Option $option): self
+    public function removeOptionnalPart(OptionnalPart $optionnalPart): self
     {
-        if ($this->options->contains($option)) {
-            $this->options->removeElement($option);
+        if ($this->optionnalParts->contains($optionnalPart)) {
+            $this->optionnalParts->removeElement($optionnalPart);
             // set the owning side to null (unless already changed)
-            if ($option->getCustomizablePart() === $this) {
-                $option->setCustomizablePart(null);
+            if ($optionnalPart->getCustomizablePart() === $this) {
+                $optionnalPart->setCustomizablePart(null);
             }
         }
 
