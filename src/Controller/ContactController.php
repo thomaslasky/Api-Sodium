@@ -39,12 +39,17 @@ class ContactController extends AbstractController
             $entityManager->flush();
         }
         
-        /*envoi mail configurer le serveur mail*/
+        /*envoi mail*/
 
-        $this->sendContactMail($request->request->all(), $mailer);
-
-        return $this->json(array('Response' => true));
-        
+        if($this->sendContactMail($request->request->all(), $mailer))
+        {
+            return $this->json(array('Response' => true));
+        }
+        else
+        {
+            return $this->json(array('Response' => false));  
+        }
+  
     }
 
     public function sendContactMail($data, $mailer)
@@ -61,6 +66,6 @@ class ContactController extends AbstractController
             'text/html'
         );
 
-        $mailer->send($message);
+        return($mailer->send($message));
     }
 }
