@@ -41,7 +41,7 @@ class ContactController extends AbstractController
         
         /*envoi mail configurer le serveur mail*/
 
-        //$this->sendContactMail($request->request->all(), $mailer);
+        $this->sendContactMail($request->request->all(), $mailer);
 
         return $this->json(array('Response' => true));
         
@@ -49,13 +49,14 @@ class ContactController extends AbstractController
 
     public function sendContactMail($data, $mailer)
     {
-        $message = (new \Swift_Message('New contact'))
-        ->setFrom('send@example.com')
+        $messageSubject = "[Nouveau contact client] ".$data['objet'];
+        $message = (new \Swift_Message($messageSubject))
+        ->setFrom('hugo.mtn7@gmail.com')
         ->setTo('hugo.mtn7@gmail.com')
         ->setBody(
             $this->renderView(
                 'emails/contact.html.twig',
-                array('mail' => $data['email'],'message' => $data['message'],'objet'=> $data['objet'])
+                array('mail' => $data['email'],'message' => $data['message'],'objet'=> $data['objet'], 'telephone' => $data['telephone'])
             ),
             'text/html'
         );
