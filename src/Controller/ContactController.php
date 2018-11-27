@@ -17,12 +17,12 @@ class ContactController extends AbstractController
     {
         /* enregistrement du client dans la bdd*/
         $entityManager = $this->getDoctrine()->getManager();
-        $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $request->get('mail')]);
+        $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $request->get('email')]);
         
         if(!$client)//nouveau client
         {
             $client = new Client();
-            $client->setEmail($request->get('mail'));
+            $client->setEmail($request->get('email'));
             if(!empty($request->get('telephone')))
             {
                 $client->setPhone($request->get('telephone'));
@@ -39,11 +39,11 @@ class ContactController extends AbstractController
             $entityManager->flush();
         }
         
-        /*envoi mail*/
+        /*envoi mail configurer le serveur mail*/
 
-        $this->sendContactMail($request->request->all(), $mailer);
+        //$this->sendContactMail($request->request->all(), $mailer);
 
-        return $this->json(array('name' => $request->get('name')));
+        return $this->json(array('Response' => true));
         
     }
 
@@ -55,7 +55,7 @@ class ContactController extends AbstractController
         ->setBody(
             $this->renderView(
                 'emails/contact.html.twig',
-                array('mail' => $data['mail'],'message' => $data['message'],'objet'=> $data['objet'])
+                array('mail' => $data['email'],'message' => $data['message'],'objet'=> $data['objet'])
             ),
             'text/html'
         );
