@@ -17,31 +17,8 @@ class ContactController extends AbstractController
      */
     public function receiveContact(Request $request, \Swift_Mailer $mailer)
     {
-        /* enregistrement du client dans la bdd*/
-        $entityManager = $this->getDoctrine()->getManager();
-        $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $request->get('email')]);
         
-        if(!$client)//nouveau client
-        {
-            $client = new Client();
-            $client->setEmail($request->get('email'));
-            if(!empty($request->get('telephone')))
-            {
-                $client->setPhone($request->get('telephone'));
-            }
-            $entityManager->persist($client);
-            $entityManager->flush();
-        }
-        else//client existant
-        {
-            if(!empty($request->get('telephone')))
-            {  
-                $client->setPhone($request->get('telephone'));
-            }
-            $entityManager->flush();
-        }
-        
-        /*envoi mail*/
+        $this->saveClientInfo($request->request->all());
 
         if($this->sendContactMail($request->request->all(), $mailer))
         {
@@ -69,5 +46,31 @@ class ContactController extends AbstractController
         );
 
         return($mailer->send($message));
+    }
+
+    public function saveClientInfo($data)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $data['email']]);
+        
+        if(!$client)//nouveau client
+        {
+            $client = new Client();
+            $client->setEmail($data['email']);
+            if(!empty($data['telephone']))
+            {
+                $client->setPhone($data['telephone']);
+            }
+            $entityManager->persist($client);
+            $entityManager->flush();
+        }
+        else//client existant
+        {
+            if(!empty($data['telephone']))
+            {  
+                $client->setPhone($data['telephone']);
+            }
+            $entityManager->flush();
+        }
     }
 }
