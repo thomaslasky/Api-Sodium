@@ -1,10 +1,6 @@
 <?php
 namespace App\Controller;
 
-// header('Access-Control-Allow-Origin: http://localhost:3000');
-// header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
-// header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,15 +13,19 @@ class PreorderController extends AbstractController
     /**
      * @Route("/preorder", name="preorder", methods={"POST"})
      */
-    public function receivePreorder(Request $request)
+    public function receivePreorder(Request $request, \Swift_Mailer $mailer)
     {
         $this->saveClientExtendedInfo($request->request->all());
 
-        return $this->json(array('Response' => true));
-        
-        // return $this->render('preorder/index.html.twig', [
-        //     'controller_name' => 'PreorderController',
-        // ]);
+        if($this->sendPreorderMail($request->request->all(), $mailer))
+        {
+            return $this->json(array('Response' => true));
+        }
+        else
+        {
+            return $this->json(array('Response' => false));  
+        }
+
     }
 
     public function saveClientExtendedInfo($data)
@@ -65,5 +65,22 @@ class PreorderController extends AbstractController
 
         $entityManager->flush();     
         
+    }
+
+    public function sendPreorderMail($data, $mailer)
+    {
+        $messageSubject = "Nouvelle précommande client";
+        $message = (new \Swift_Message($messageSubject))
+        ->setFrom($data['email'])
+        ->setTo(getenv('MAIL_DEST'))
+        ->setBody(
+            $this->renderView(
+                'emails/preorder.html.twig',
+                array('mail' => $data['email'],'message' => $data['message'],'codePostal'=> $data['codePostal'],'nom'=> $data['nom'],'prenom'=> $data['prenom'], 'telephone' => $data['telephone'])
+            ),
+            'text/html'
+        );
+
+        return($mailer->send($message));
     }
 }

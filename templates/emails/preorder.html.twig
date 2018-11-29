@@ -1,0 +1,13 @@
+<h3>Un client a envoyé une nouvelle précommande</h3>
+
+<p>De: {{ mail }}</p>
+
+<p> Prénom : {% if prenom is empty %} Non communiqué {% else %} {{prenom}} {% endif %}</p>
+<p> Nom : {% if nom is empty %} Non communiqué {% else %} {{nom}} {% endif %}</p>
+ 
+<p>Téléphone: {% if telephone is empty %} Non communiqué {% else %} {{telephone}} {% endif %}</p>
+
+<p> Code Postal : {% if codePostal is empty %} Non communiqué {% else %} {{codePostal}} {% endif %}</p>
+
+<p>Commentaire: 
+{% if message is empty %} Le client n'a pas laissé de commentaire {% else %} {{message}} {% endif %}</p>
