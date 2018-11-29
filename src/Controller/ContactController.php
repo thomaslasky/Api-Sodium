@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ContactController extends AbstractController
 {
-    private $MAILDEST="hugo.mtn7@gmail.com";
 
     /**
      * @Route("/contact", name="contact", methods={"POST"})
@@ -35,8 +34,8 @@ class ContactController extends AbstractController
     {
         $messageSubject = "[Nouveau contact client] ".$data['objet'];
         $message = (new \Swift_Message($messageSubject))
-        ->setFrom("SodiumCycle@gmail.com")
-        ->setTo($this->MAILDEST)
+        ->setFrom($data['email'])
+        ->setTo(getenv('MAIL_DEST'))
         ->setBody(
             $this->renderView(
                 'emails/contact.html.twig',
@@ -53,7 +52,7 @@ class ContactController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $client = $entityManager->getRepository(Client::class)->findOneBy(['email' => $data['email']]);
         
-        if(!$client)//nouveau client
+        if(!$client)
         {
             $client = new Client();
             $client->setEmail($data['email']);
@@ -64,7 +63,7 @@ class ContactController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
         }
-        else//client existant
+        else
         {
             if(!empty($data['telephone']))
             {  
