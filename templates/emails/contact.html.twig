@@ -1,0 +1,10 @@
+<h3>Un client vous a envoyé un message</h3>
+
+<p>De: {{ mail }}</p>
+ 
+<p>Téléphone: {% if telephone is empty %} Non communiqué {% else %} {{telephone}} {% endif %}</p>
+
+<p>Objet: {{ objet }}</p>
+
+<p>Message: 
+{{message}}</p>
