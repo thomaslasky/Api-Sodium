@@ -9,5 +9,13 @@
 
 <p> Code Postal : {% if codePostal is empty %} Non communiqué {% else %} {{codePostal}} {% endif %}</p>
 
+
+<p>Options</p>
+<ul>
+    {% for option in options %}
+        <li>{{ option.name}} : {{ option.value}}</li>
+    {% endfor %}
+</ul>
+
 <p>Commentaire: 
 {% if message is empty %} Le client n'a pas laissé de commentaire {% else %} {{message}} {% endif %}</p>

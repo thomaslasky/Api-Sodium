@@ -15,9 +15,12 @@ class PreorderController extends AbstractController
      */
     public function receivePreorder(Request $request, \Swift_Mailer $mailer)
     {
-        $this->saveClientExtendedInfo($request->request->all());
+        
+        
+        $formData = $this->decodePreorderFormData($request);
+        $this->saveClientExtendedInfo($formData['data']);
 
-        if($this->sendPreorderMail($request->request->all(), $mailer))
+        if($this->sendPreorderMail($formData['data'],$formData['options'], $mailer))
         {
             return $this->json(array('Response' => true));
         }
@@ -67,20 +70,45 @@ class PreorderController extends AbstractController
         
     }
 
-    public function sendPreorderMail($data, $mailer)
+    public function sendPreorderMail($data,$options, $mailer)
     {
         $messageSubject = "Nouvelle précommande client";
         $message = (new \Swift_Message($messageSubject))
-        ->setFrom($data['email'])
+        ->setFrom("hugo@gmail.com")//$data['email']
         ->setTo(getenv('MAIL_DEST'))
         ->setBody(
             $this->renderView(
                 'emails/preorder.html.twig',
-                array('mail' => $data['email'],'message' => $data['message'],'codePostal'=> $data['codePostal'],'nom'=> $data['nom'],'prenom'=> $data['prenom'], 'telephone' => $data['telephone'])
+                array('mail' => $data['email'],'message' => $data['message'],'codePostal'=> $data['codePostal'],'nom'=> $data['nom'],'prenom'=> $data['prenom'], 'telephone' => $data['telephone'], 'options' => $options)
             ),
             'text/html'
         );
 
         return($mailer->send($message));
+    }
+
+    public function decodePreorderFormData($request)
+    {
+        $options=[];
+        $data=[];
+
+        $formDataStringArray=explode("|",$request->get('inputs'));
+
+        foreach($formDataStringArray as $formDataString)
+        {
+            $formDataObject = json_decode($formDataString);
+
+            if($formDataObject->type == "radio")
+            {
+                array_push($options,$formDataObject);          
+            }
+            else{
+                $data += array( $formDataObject->name => $formDataObject->value );
+            }
+            
+        }
+        $formData=["options" => $options, "data" => $data];
+
+        return $formData;
     }
 }
