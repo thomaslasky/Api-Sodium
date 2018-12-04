@@ -28,6 +28,11 @@ class Image
      */
     private $label;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $page;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +58,18 @@ class Image
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getPage(): ?string
+    {
+        return $this->page;
+    }
+
+    public function setPage(string $page): self
+    {
+        $this->page = $page;
 
         return $this;
     }
