@@ -23,6 +23,11 @@ class Image
      */
     private $source;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $label;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,6 +41,18 @@ class Image
     public function setSource(string $source): self
     {
         $this->source = $source;
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }

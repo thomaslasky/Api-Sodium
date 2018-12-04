@@ -44,6 +44,36 @@ class OptionnalPart
      */
     private $customizable_part;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $label;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $imageGlobal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $desc_fr;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $desc_en;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $desc_es;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +135,78 @@ class OptionnalPart
     public function setCustomizablePart(?CustomizablePart $customizable_part): self
     {
         $this->customizable_part = $customizable_part;
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getImageGlobal(): ?string
+    {
+        return $this->imageGlobal;
+    }
+
+    public function setImageGlobal(?string $imageGlobal): self
+    {
+        $this->imageGlobal = $imageGlobal;
+
+        return $this;
+    }
+
+    public function getDescFr(): ?string
+    {
+        return $this->desc_fr;
+    }
+
+    public function setDescFr(string $desc_fr): self
+    {
+        $this->desc_fr = $desc_fr;
+
+        return $this;
+    }
+
+    public function getDescEn(): ?string
+    {
+        return $this->desc_en;
+    }
+
+    public function setDescEn(string $desc_en): self
+    {
+        $this->desc_en = $desc_en;
+
+        return $this;
+    }
+
+    public function getDescEs(): ?string
+    {
+        return $this->desc_es;
+    }
+
+    public function setDescEs(string $desc_es): self
+    {
+        $this->desc_es = $desc_es;
 
         return $this;
     }

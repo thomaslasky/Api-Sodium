@@ -45,6 +45,11 @@ class CustomizablePart
      */
     private $optionnalParts;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $label;
+
     public function __construct()
     {
         $this->optionnalParts = new ArrayCollection();
@@ -130,6 +135,18 @@ class CustomizablePart
                 $optionnalPart->setCustomizablePart(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $label): self
+    {
+        $this->label = $label;
 
         return $this;
     }
