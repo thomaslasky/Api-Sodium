@@ -25,6 +25,6 @@ class ImageController extends AbstractController
             $image->setSource($domain.'/'.$imgPath.$src);
         }
 
-        return $this->json(array('Response' => $image));
+        return $this->json(array('Response' => $images));
     }
 }
