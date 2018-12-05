@@ -10,13 +10,33 @@ class TextController extends AbstractController
 {
 
     /**
-     * @Route("/text/{page}", methods={"GET"}, name="text")
+     * @Route("/text/{language}", methods={"GET"}, name="text")
      */
-    public function getTextByPage($page)
+    public function getTextByLanguage($language)
     {
         $textRepository = $this->getDoctrine()->getRepository(Text::class);
-        $texts = $textRepository->findBy(['page'=>$page]);
+        $texts = $textRepository->findAll();
 
-        return $this->json(array('Response' => $texts));
+        $textArray=[];
+
+        foreach ($texts as $text) {
+            switch ($language)
+            {
+                case "FR":
+                    $textArray += array($text->getLabel() => $text->getFR());
+                    break;
+                case "EN":
+                    $textArray += array($text->getLabel() => $text->getEN());
+                    break;
+                case "ES":
+                    $textArray += array($text->getLabel() => $text->getES());
+                    break;
+                default:
+                    $textArray += array($text->getLabel() => $text->getEN());
+
+            }
+        };
+
+        return $this->json(array('texts' => $textArray));
     }
 }
