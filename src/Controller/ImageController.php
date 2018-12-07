@@ -10,21 +10,22 @@ class ImageController extends AbstractController
 {
 
     /**
-     * @Route("/image/{page}", methods={"GET"}, name="image")
+     * @Route("/image", methods={"GET"}, name="image")
      */
-    public function getImageByPage($page)
+    public function getImages()
     {
-        $imageRepository = $this->getDoctrine()->getRepository(Image::class);
-        $images = $imageRepository->findBy(['page'=>$page]);
-
+        $imageArray=[];
         $domain = getenv('DOMAIN_NAME');
         $imgPath = getenv('IMG_PATH');
 
+        $imageRepository = $this->getDoctrine()->getRepository(Image::class);
+        $images = $imageRepository->findAll();
+
         foreach ($images as $image) {
             $src = $image->getSource();
-            $image->setSource($domain.'/'.$imgPath.$src);
+            $imageArray += array($image->getLabel() => 'http://'.$domain.'/'.$imgPath.$src);
         }
 
-        return $this->json(array('Response' => $images));
+        return $this->json(array('images' => $imageArray));
     }
 }
