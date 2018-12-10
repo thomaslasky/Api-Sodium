@@ -13,6 +13,9 @@ class CustomizablePartController extends AbstractController
      */
     public function getAllCustomParts($lang)
     {
+        $domain = getenv('DOMAIN_NAME');
+        $imgPath = getenv('IMG_PATH');
+
         $customArray=[];
         $i=0;
 
@@ -22,7 +25,7 @@ class CustomizablePartController extends AbstractController
         foreach ($customParts as $customPart) {
             $customArray[$i] = array("id" => $customPart->getId(),
                                     "label" => $customPart->getLabel(),
-                                    "image" => $customPart->getImage());
+                                    "image" => 'http://'.$domain.'/'.$imgPath.$customPart->getImage());
             switch ($lang)
             {
                 case "FR":
@@ -47,8 +50,8 @@ class CustomizablePartController extends AbstractController
                 $optionArray[$j] =array("id" => $option->getId(),
                                     "label" => $option->getLabel(),
                                     "price" => $option->getPrice(),
-                                    "image" => $option->getImage(),
-                                    "imageGlobal" => $option->getImageGlobal());
+                                    "image" => ($option->getImage() ? 'http://'.$domain.'/'.$imgPath.$option->getImage():null),
+                                    "imageGlobal" => ($option->getImageGlobal() ? 'http://'.$domain.'/'.$imgPath.$option->getImageGlobal():null));
             
                 switch ($lang)
                 {
