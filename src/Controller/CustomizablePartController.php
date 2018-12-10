@@ -38,10 +38,44 @@ class CustomizablePartController extends AbstractController
                     $customArray[$i] += array("name" => $customPart->getNameEn());
 
             }
+
             $options = $customPart->getOptionnalParts();
+
+            $optionArray=[];
+            $j=0;
+            foreach($options as $option){
+                $optionArray[$j] =array("id" => $option->getId(),
+                                    "label" => $option->getLabel(),
+                                    "price" => $option->getPrice(),
+                                    "image" => $option->getImage(),
+                                    "imageGlobal" => $option->getImageGlobal());
+            
+                switch ($lang)
+                {
+                    case "FR":
+                        $optionArray[$j] += array("name" => $option->getNameFr(),"desc" => $option->getDescFr());
+                        break;
+                    case "EN":
+                        $optionArray[$j] += array("name" => $option->getNameEn(),"desc" => $option->getDescEn());
+                        break;
+                    case "ES":
+                        $optionArray[$j] += array("name" => $option->getNameEs(),"desc" => $option->getDescEs());
+                        break;
+                    default:
+                        $optionArray[$j] += array("name" => $option->getNameEn(),"desc" => $option->getDescEn());
+    
+                }
+
+                $j++;
+
+                
+            }
+
+            $customArray[$i] += array("options" => $optionArray);
+
             $i++;
         }
 
-        return $this->json(array('customParts' => $customArray,'options' => $options ));
+        return $this->json(array('customParts' => $customArray));
     }
 }
