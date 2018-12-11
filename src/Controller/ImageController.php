@@ -15,6 +15,7 @@ class ImageController extends AbstractController
     public function getImages()
     {
         $imageArray=[];
+        $galleryArray=[];
         $domain = getenv('DOMAIN_NAME');
         $imgPath = getenv('IMG_PATH');
 
@@ -23,9 +24,17 @@ class ImageController extends AbstractController
 
         foreach ($images as $image) {
             $src = $image->getSource();
-            $imageArray += array($image->getLabel() => 'http://'.$domain.'/'.$imgPath.$src);
-        }
+            if ($image->getPage() === "gallery")
+            {
+                array_push($galleryArray,'http://'.$domain.'/'.$imgPath.$src);
+            }
+            else{
 
+                $imageArray += array($image->getLabel() => 'http://'.$domain.'/'.$imgPath.$src);
+            }
+        }
+        
+        $imageArray += array('galleryImages' => $galleryArray);
         return $this->json(array('images' => $imageArray));
     }
 }
