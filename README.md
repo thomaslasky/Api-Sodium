@@ -5,7 +5,7 @@ La partie API représente la gestion des données sur le serveur, c'est l'interf
 # Getting Started
 
 - Avec votre CLI se positionner dans le répertoire de l'API
-- Taper la commande `composer install`
+- Taper la commande `composer install` puis `composer update`
 - Dans le fichier **.env** à la ligne DATABASE_URL mettre l'addresse et vos identiants
 - A la ligne MAILER_URL mettre l'addresse de votre serveur mail et vos identifiants
 - Dans la partie CUSTOM_VARS mettre à jour l'adresse mail sur laquelle vous souhaitez recevoir les contacts et les précommandes sur la ligne MAIL_DEST
@@ -17,7 +17,9 @@ La partie API représente la gestion des données sur le serveur, c'est l'interf
 - taper la commande `php bin/console d:d:c` pour créer la base de données
 - taper la commande `php bin/console d:m:m` pour lancer la migration
 
-Votre base de données est maintenant créée vous pouvez éditer les données via PhpMyAdmin ou par l'api à l'adresse http://votrenomdedomaine/api
+Votre base de données est maintenant créée vous pouvez editer les données via PhpMyAdmin ou par l'api à l'adresse http://votrenomdedomaine/api.
+
+Une jeu de données de base est fourni dans le fichier **xubaka.sql** que vous pouvez importer directement dans la base de données.
 
 Le schéma de la base de données est consultable dans le fichier xubaka MCD.png
 
